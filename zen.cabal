@@ -1,15 +1,15 @@
 name:                  zen
 version:               0.0.0.1
 synopsis:              Synopsis text
-homepage:              
-license:               GPL3
+homepage:              https://blog.latukha.com
+license:               GPL-3
 license-file:          LICENSE
 author:                Anton Latukha
 maintainer:            anton@latukha.com
 copyright:             Anton Latukha
-category:              
+category:              Command line, logging
 build-type:            Simple
-cabal-version:         >= 3.0
+cabal-version:         >= 1.10
 
 executable main
   hs-source-dirs:      src
