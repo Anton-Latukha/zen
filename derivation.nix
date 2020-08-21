@@ -1,4 +1,4 @@
-{ mkDerivation, base, stdenv, unicode-prelude }:
+{ mkDerivation, base, stdenv }:
 mkDerivation {
   pname = "zen";
   version = "0.0.0.1";
@@ -6,7 +6,7 @@ mkDerivation {
   isLibrary = false;
   isExecutable = true;
   executableHaskellDepends = [ base ];
-  homepage = "";
+  homepage = "https://blog.latukha.com";
   description = "Synopsis text";
   license = stdenv.lib.licenses.gpl3;
 }
