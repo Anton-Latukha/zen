@@ -1,12 +1,12 @@
 { mkDerivation, base, stdenv, unicode-prelude }:
 mkDerivation {
-  pname = "projectName";
+  pname = "zen";
   version = "0.0.0.1";
   src = ./.;
   isLibrary = false;
   isExecutable = true;
-  executableHaskellDepends = [ base unicode-prelude ];
-  homepage = "http://haskellbook.com/";
+  executableHaskellDepends = [ base ];
+  homepage = "";
   description = "Synopsis text";
-  license = stdenv.lib.licenses.bsd3;
+  license = stdenv.lib.licenses.gpl3;
 }
