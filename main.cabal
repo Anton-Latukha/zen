@@ -1,13 +1,13 @@
 name:                  zen
 version:               0.0.0.1
 synopsis:              Synopsis text
-homepage:              http://haskellbook.com/
-license:               BSD3
+homepage:              
+license:               GPL3
 license-file:          LICENSE
 author:                Anton Latukha
 maintainer:            anton@latukha.com
 copyright:             Anton Latukha
-category:              Training
+category:              
 build-type:            Simple
 cabal-version:         >= 3.0
 
