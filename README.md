@@ -60,9 +60,9 @@ Add additional notes about how to deploy this on a live system
 
 * [Name](address) - Description
 
-## Contributing
+## Debugging & Contributing
 
-Please read [CONTRIBUTING.md](address) for details on the the process for submitting pull requests to us.
+[CONTRIBUTING.md](address).
 
 ## Versioning
 
