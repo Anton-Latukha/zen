@@ -1,7 +1,7 @@
 module Main where
 
 import Data.Version (showVersion)
-import Paths_zen (version)
+import qualified Paths_zen as Package
 
 main :: IO ()
-main = putStrLn (showVersion version)
+main = putStrLn (showVersion Package.version)
