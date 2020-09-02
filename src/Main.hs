@@ -32,9 +32,10 @@ main = greet =<< execParser opts
 
 -}
 
-
+logFile = "/tmp/tmp.log"
 
 main :: IO ()
 main = do
   text <- getContents
   putStrLn text
+  appendFile logFile text
