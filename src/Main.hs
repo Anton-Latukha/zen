@@ -32,5 +32,9 @@ main = greet =<< execParser opts
 
 -}
 
+
+
 main :: IO ()
-main = putStrLn "a"
+main = do
+  text <- getContents
+  putStrLn text
