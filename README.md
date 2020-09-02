@@ -1,6 +1,6 @@
 # Project Title
 
-One Paragraph of project description goes here
+One already has too much to attend to, stop bothering yourself, this tool would allow you to attend to what is important - code.
 
 ## Getting Started
 
