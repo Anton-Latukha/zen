@@ -1,8 +1,8 @@
 module Main where
 
 import qualified Options.Applicative as OPA
-import qualified Paths_zen as Package
-import Data.Version
+import qualified Paths_zen as Pac
+import Data.Version as Ver
 
 data Opts
   = Opts
@@ -35,7 +35,7 @@ main = do
     OPA.infoOption
       versionStr optDesc
      where
-      versionStr = showVersion Package.version
+      versionStr = Ver.showVersion Pac.version
       optDesc = OPA.long "version" <> OPA.help "Version release"
 
   logFileOpt :: OPA.Parser String
