@@ -9,21 +9,6 @@ data Opts
   { logFile :: String
   }
 
-{- -- Optparse version
-
-import qualified Paths_zen as Package
-
-data Command
-  = Command
-  {
-    version :: Bool
-  }
-
-versionOpt :: Parser (a -> a)
-versionOpt = infoOption (showVersion Package.version) (long "version" <> help "Released version")
--}
-
-logFile = "/tmp/tmp.log"
 
 main :: IO ()
 main = do
