@@ -8,6 +8,7 @@ import qualified Options.Applicative as OPA
 import qualified Paths_zen as Pac
 import Data.Version as Ver
 
+import qualified System.Info as Inf
 
 -- ** Data types
 data Opts
@@ -22,6 +23,7 @@ debugOut = print
 -- ** main function
 main :: IO ()
 main = do
+  debugOut Inf.os
   opts <- OPA.execParser optsParser
   text <- getContents
   debugOut text
