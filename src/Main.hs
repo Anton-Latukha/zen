@@ -1,6 +1,6 @@
 module Main where
 
-import Options.Applicative
+import qualified Options.Applicative as OPA
 import qualified Paths_zen as Package
 import Data.Version
 
@@ -12,40 +12,40 @@ data Opts
 
 main :: IO ()
 main = do
-  opts <- execParser optsParser
+  opts <- OPA.execParser optsParser
   text <- getContents
   print text
   appendFile (logFile opts) text
 
  where
-  optsParser :: ParserInfo Opts
+  optsParser :: OPA.ParserInfo Opts
   optsParser =
-    info
+    OPA.info
       options
       introduction
      where
-      options = helper <*> versionOpt <*> programOptions
+      options = OPA.helper <*> versionOpt <*> programOptions
       introduction =
-        fullDesc
-        <> progDesc "Zen. Attend to what is important."
-        <> header "zen - silence/redirect stdout outputs to get only important information."
+        OPA.fullDesc
+        <> OPA.progDesc "Zen. Attend to what is important."
+        <> OPA.header "zen - silence/redirect stdout outputs to get only important information."
 
-  versionOpt :: Parser (a -> a)
+  versionOpt :: OPA.Parser (a -> a)
   versionOpt =
-    infoOption
+    OPA.infoOption
       versionStr optDesc
      where
       versionStr = showVersion Package.version
-      optDesc = long "version" <> help "Version release"
+      optDesc = OPA.long "version" <> OPA.help "Version release"
 
-  logFileOpt :: Parser String
-  logFileOpt = strOption $
-    long "file"
-    <> short 'f'
-    <> metavar "LOGFILE"
-    <> help "Direct log into a file"
+  logFileOpt :: OPA.Parser String
+  logFileOpt = OPA.strOption $
+    OPA.long "file"
+    <> OPA.short 'f'
+    <> OPA.metavar "LOGFILE"
+    <> OPA.help "Direct log into a file"
 
-  programOptions :: Parser Opts
+  programOptions :: OPA.Parser Opts
   programOptions =
     Opts
     <$> logFileOpt
