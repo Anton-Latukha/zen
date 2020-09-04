@@ -36,12 +36,18 @@ main = do
   optsParser :: ParserInfo Opts
   optsParser =
     info
-      (helper <*> versionOption <*> programOptions)
+      (helper <*> versionOpt <*> programOptions)
       (fullDesc <> progDesc "Zen. Attend to what is important." <>
         header "zen - silence/redirect stdout outputs to get only important information.")
 
-  versionOption :: Parser (a -> a)
-  versionOption = infoOption "0.0" (long "version" <> help "Show version")
+  versionOpt :: Parser (a -> a)
+  versionOpt =
+    infoOption
+      version $
+        long "version"
+        <> help "Version release"
+     where
+      version = showVersion Package.version
 
   logFileOpt :: Parser String
   logFileOpt = strOption $
