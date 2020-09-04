@@ -33,11 +33,10 @@ main = do
   versionOpt :: Parser (a -> a)
   versionOpt =
     infoOption
-      version $
-        long "version"
-        <> help "Version release"
+      versionStr optDesc
      where
-      version = showVersion Package.version
+      versionStr = showVersion Package.version
+      optDesc = long "version" <> help "Version release"
 
   logFileOpt :: Parser String
   logFileOpt = strOption $
