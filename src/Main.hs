@@ -8,6 +8,7 @@ import qualified Options.Applicative as OPA
 import qualified Paths_zen as Pac
 import qualified Data.Version as Ver
 import qualified System.Info as Inf
+import qualified System.Posix.Unistd as PUn
 
 -- ** Data types
 data Opts
@@ -16,6 +17,7 @@ data Opts
   }
 
 -- ** Development debug
+debugOut :: Show a => a -> IO ()
 debugOut = print
 
 
@@ -23,6 +25,8 @@ debugOut = print
 main :: IO ()
 main = do
   debugOut Inf.os
+  debugPosixVer <- PUn.getSysVar PUn.PosixVersion
+  debugOut debugPosixVer
   opts <- OPA.execParser optsParser
   text <- getContents
   debugOut text

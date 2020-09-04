@@ -16,6 +16,7 @@ executable zen
   hs-source-dirs:      src
   build-depends:       base >= 4.11 && < 5
                      , optparse-applicative
+                     , unix
   main-is:             Main.hs
   other-modules:
     Paths_zen
