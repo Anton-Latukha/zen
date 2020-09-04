@@ -6,8 +6,7 @@ module Main where
 -- ** Imports
 import qualified Options.Applicative as OPA
 import qualified Paths_zen as Pac
-import Data.Version as Ver
-
+import qualified Data.Version as Ver
 import qualified System.Info as Inf
 
 -- ** Data types
