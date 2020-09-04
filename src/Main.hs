@@ -7,9 +7,6 @@ module Main where
 import qualified Options.Applicative as OPA
 import qualified Paths_zen as Pac
 import qualified Data.Version as Ver
-import qualified System.Info as Inf
-import qualified System.Posix.Unistd as PUn
-import qualified System.Posix.Env as Env
 
 -- ** Data types
 data Opts
@@ -21,15 +18,9 @@ data Opts
 debugOut :: Show a => a -> IO ()
 debugOut = print
 
-
 -- ** main function
 main :: IO ()
 main = do
-  debugOut Inf.os
-  debugPosixVer <- PUn.getSysVar PUn.PosixVersion
-  debugOut debugPosixVer
-  debugEnv <- Env.getEnvironment
-  debugOut debugEnv
   opts <- OPA.execParser optsParser
   text <- getContents
   debugOut text

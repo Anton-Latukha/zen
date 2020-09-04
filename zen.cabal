@@ -20,3 +20,4 @@ executable zen
   main-is:             Main.hs
   other-modules:
     Paths_zen
+    OS
