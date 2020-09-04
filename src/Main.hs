@@ -39,11 +39,12 @@ main = do
       optDesc = OPA.long "version" <> OPA.help "Version release"
 
   logFileOpt :: OPA.Parser String
-  logFileOpt = OPA.strOption $
-    OPA.long "file"
-    <> OPA.short 'f'
-    <> OPA.metavar "LOGFILE"
-    <> OPA.help "Direct log into a file"
+  logFileOpt =
+    OPA.strOption $
+      OPA.long "file"
+      <> OPA.short 'f'
+      <> OPA.metavar "LOGFILE"
+      <> OPA.help "Direct log into a file"
 
   programOptions :: OPA.Parser Opts
   programOptions =
