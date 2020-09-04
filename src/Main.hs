@@ -21,9 +21,14 @@ main = do
   optsParser :: ParserInfo Opts
   optsParser =
     info
-      (helper <*> versionOpt <*> programOptions)
-      (fullDesc <> progDesc "Zen. Attend to what is important." <>
-        header "zen - silence/redirect stdout outputs to get only important information.")
+      options
+      introduction
+     where
+      options = helper <*> versionOpt <*> programOptions
+      introduction =
+        fullDesc
+        <> progDesc "Zen. Attend to what is important."
+        <> header "zen - silence/redirect stdout outputs to get only important information."
 
   versionOpt :: Parser (a -> a)
   versionOpt =
