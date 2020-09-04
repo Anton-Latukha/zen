@@ -10,9 +10,6 @@ data Opts
 
 {- -- Optparse version
 
-import Options.Applicative
-import Data.Semigroup ((<>))
-import Data.Version (showVersion)
 import qualified Paths_zen as Package
 
 data Command
@@ -21,22 +18,8 @@ data Command
     version :: Bool
   }
 
-baseOpt :: Parser Command
-
 versionOpt :: Parser (a -> a)
 versionOpt = infoOption (showVersion Package.version) (long "version" <> help "Released version")
-
-opts :: Parser Command
-opts = baseOpt <**> helper <**> versionOpt
-
-main :: IO ()
-main = greet =<< execParser opts
-  where
-    opts = info (greet <**> helper <**> versionOpt) mempty
-    greet :: Command -> IO ()
-    greet (Command False) = putStrLn $ "Hello!"
-    greet _ = return ()
-
 -}
 
 logFile = "/tmp/tmp.log"
