@@ -4,8 +4,7 @@ import Options.Applicative
 
 data Opts
   = Opts
-  {
-    optLogFile :: String
+  { logFile :: String
   }
 
 {- -- Optparse version
@@ -29,7 +28,7 @@ main = do
   opts <- execParser optsParser
   text <- getContents
   print text
-  appendFile (optLogFile opts) text
+  appendFile (logFile opts) text
 
  where
   optsParser :: ParserInfo Opts
