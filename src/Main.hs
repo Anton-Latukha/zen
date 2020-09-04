@@ -10,11 +10,13 @@ data Opts
   }
 
 
+debugOut = print
+
 main :: IO ()
 main = do
   opts <- OPA.execParser optsParser
   text <- getContents
-  print text
+  debugOut text
   appendFile (logFile opts) text
 
  where
