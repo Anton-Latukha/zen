@@ -12,9 +12,10 @@ build-type:            Simple
 cabal-version:         >= 1.10
 
 executable zen
-  hs-source-dirs:      src
-  main-is:             Main.hs
   default-language:    Haskell2010
+  hs-source-dirs:      src
   build-depends:       base >= 4.11 && < 5
                      , optparse-applicative
-
+  main-is:             Main.hs
+  other-modules:
+    Paths_zen
