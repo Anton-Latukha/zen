@@ -1,6 +1,8 @@
 module Main where
 
 import Options.Applicative
+import qualified Paths_zen as Package
+import Data.Version
 
 data Opts
   = Opts
