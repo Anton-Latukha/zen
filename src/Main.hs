@@ -1,17 +1,25 @@
+-- * Pragmas
+
+-- * Module
 module Main where
 
+-- ** Imports
 import qualified Options.Applicative as OPA
 import qualified Paths_zen as Pac
 import Data.Version as Ver
 
+
+-- ** Data types
 data Opts
   = Opts
   { logFile :: String
   }
 
-
+-- ** Development debug
 debugOut = print
 
+
+-- ** main function
 main :: IO ()
 main = do
   opts <- OPA.execParser optsParser
