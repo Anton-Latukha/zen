@@ -8,6 +8,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
+2020-09-05: NOTE: Currely Zen expects `systemd` init system. In Haskell there is no module to detect runtime system (*sic), so prejudjment is put in OS/init-detection, the resting code is in `OS.hs`.
+
 What things you need to install the software and how to install them
 
 ```
