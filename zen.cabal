@@ -17,6 +17,7 @@ executable zen
   build-depends:       base >= 4.11 && < 5
                      , optparse-applicative
                      , unix
+                     , hsyslog
   main-is:             Main.hs
   other-modules:
     Paths_zen

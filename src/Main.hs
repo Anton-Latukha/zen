@@ -7,9 +7,12 @@ module Main where
 import qualified Options.Applicative as OPA
 import qualified Paths_zen as Pac
 import qualified Data.Version as Ver
+import qualified System.Posix.Syslog as Log
+import qualified System.Environment as Env
+import qualified Foreign.C.String as CStr
 
 -- ** Data types
-data Opts
+newtype Opts
   = Opts
   { logFile :: String
   }
@@ -21,10 +24,12 @@ debugOut = print
 -- ** main function
 main :: IO ()
 main = do
-  opts <- OPA.execParser optsParser
-  text <- getContents
-  debugOut text
-  appendFile (logFile opts) text
+  appName <- Env.getProgName
+  Log.withSyslog appName [Log.LogPID] Log.User $ do
+    text <- getContents
+    debugOut text
+    cString <- CStr.newCAStringLen text
+    Log.syslog Nothing Log.Notice cString
 
  where
   optsParser :: OPA.ParserInfo Opts
