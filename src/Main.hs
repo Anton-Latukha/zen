@@ -10,9 +10,10 @@ import qualified Data.Version as Ver
 import qualified System.Posix.Syslog as Log
 import qualified System.Environment as Env
 import qualified Foreign.C.String as CStr
+import qualified System.Process as Proc
 
 -- ** Data types
-newtype Opts
+data Opts
   = Opts
   { logFile :: String
   }
@@ -24,14 +25,18 @@ debugOut = print
 -- ** main function
 main :: IO ()
 main = do
+  opts <- OPA.execParser optsParser
   appName <- Env.getProgName
   Log.withSyslog appName [Log.LogPID] Log.User $ do
+    sendNotice
     text <- getContents
-    debugOut text
     cString <- CStr.newCAStringLen text
-    Log.syslog Nothing Log.Notice cString
+    sendNotice cString
 
  where
+
+  sendNotice = Log.syslog Nothing Log.Notice
+
   optsParser :: OPA.ParserInfo Opts
   optsParser =
     OPA.info
@@ -52,15 +57,21 @@ main = do
       versionStr = Ver.showVersion Pac.version
       optDesc = OPA.long "version" <> OPA.help "Version release"
 
-  logFileOpt :: OPA.Parser String
-  logFileOpt =
-    OPA.strOption $
-      OPA.long "file"
-      <> OPA.short 'f'
-      <> OPA.metavar "LOGFILE"
-      <> OPA.help "Direct log into a file"
-
   programOptions :: OPA.Parser Opts
   programOptions =
     Opts
-    <$> logFileOpt
+    <$> wrappedCommandOpt
+   where
+    wrappedCommandOpt :: OPA.Parser String
+    wrappedCommandOpt =
+      OPA.argument OPA.str $
+        OPA.metavar "COMMAND_TO_WRAP"
+        <> OPA.help "Command to execute"
+
+    logFileOpt :: OPA.Parser String
+    logFileOpt =
+      OPA.strOption $
+        OPA.long "file"
+        <> OPA.short 'f'
+        <> OPA.metavar "LOGFILE"
+        <> OPA.help "Direct log into a file"
