@@ -44,10 +44,11 @@ main = do
       introduction
      where
       options = OPA.helper <*> versionOpt <*> programOptions
+      introduction :: OPA.InfoMod a
       introduction =
         OPA.fullDesc
         <> OPA.progDesc "Zen. Attend to what is important."
-        <> OPA.header "zen - silence/redirect stdout outputs to get only important information."
+        <> OPA.header "zen - silence&redirect stdout outputs to get only important information."
 
   versionOpt :: OPA.Parser (a -> a)
   versionOpt =
