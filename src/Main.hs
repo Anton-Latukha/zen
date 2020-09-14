@@ -64,9 +64,9 @@ main = do
    where
     wrappedCommandOpt :: OPA.Parser String
     wrappedCommandOpt =
-      OPA.argument OPA.str $
         OPA.metavar "COMMAND_TO_WRAP"
         <> OPA.help "Command to execute"
+      OPA.strArgument $
 
     logFileOpt :: OPA.Parser String
     logFileOpt =
