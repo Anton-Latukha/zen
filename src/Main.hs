@@ -16,6 +16,7 @@ import qualified System.Process as Proc
 data Opts
   = Opts
   { logFile :: String
+  , wrappedCommand :: String
   }
 
 -- ** Development debug
@@ -28,14 +29,14 @@ main = do
   opts <- OPA.execParser optsParser
   appName <- Env.getProgName
   Log.withSyslog appName [Log.LogPID] Log.User $ do
-    sendNotice
+    sendNotice $ wrappedCommand opts
     text <- getContents
-    cString <- CStr.newCAStringLen text
-    sendNotice cString
+    sendNotice text
 
  where
 
-  sendNotice = Log.syslog Nothing Log.Notice
+  sendNotice :: String -> IO ()
+  sendNotice text = CStr.newCAStringLen text >>= \ x -> Log.syslog Nothing Log.Notice x
 
   optsParser :: OPA.ParserInfo Opts
   optsParser =
