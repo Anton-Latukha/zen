@@ -38,8 +38,8 @@ main = do
 
  where
 
-  sendNotice :: String -> IO ()
-  sendNotice text = CStr.newCAStringLen text >>= \ x -> Log.syslog Nothing Log.Notice x
+  sendNotice :: Show a => a -> IO ()
+  sendNotice text = CStr.newCAStringLen (show text) >>= \ x -> Log.syslog Nothing Log.Notice x
 
   optsParser :: OPA.ParserInfo Opts
   optsParser =
