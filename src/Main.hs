@@ -32,6 +32,9 @@ main = do
     sendNotice $ wrappedCommand opts
     text <- getContents
     sendNotice text
+    case logFile opts of
+      Just path -> appendFile path text
+      Nothing -> pure ()
 
  where
 
