@@ -15,7 +15,7 @@ import qualified System.Process as Proc
 -- ** Data types
 data Opts
   = Opts
-  { logFile :: String
+  { logFile :: Maybe String
   , wrappedCommand :: String
   }
 
@@ -62,7 +62,8 @@ main = do
   programOptions :: OPA.Parser Opts
   programOptions =
     Opts
-    <$> wrappedCommandOpt
+    <$> OPA.optional logFileOpt
+    <*> wrappedCommandOpt
    where
     wrappedCommandOpt :: OPA.Parser String
     wrappedCommandOpt =
