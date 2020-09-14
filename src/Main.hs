@@ -38,8 +38,11 @@ main = do
 
  where
 
+  send :: Show a => Log.Priority -> a -> IO ()
+  send lvl text = Log.syslog Nothing lvl =<< CStr.newCAStringLen (show text)
+
   sendNotice :: Show a => a -> IO ()
-  sendNotice text = CStr.newCAStringLen (show text) >>= \ x -> Log.syslog Nothing Log.Notice x
+  sendNotice text = send Log.Notice text
 
   optsParser :: OPA.ParserInfo Opts
   optsParser =
