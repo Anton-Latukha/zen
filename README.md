@@ -2,6 +2,9 @@
 
 One already has too much to attend to, stop bothering yourself, this tool would allow you to attend to what is important - code.
 
+A CLI tool that would give control to the user see only terminal output information user interested in, it redirects miscellaneous terminal output information, logs it into the journalling system, on the return value would output the whole log at once, and offer the flexibility of the behavior. So people can wrap the commands into it, form aliases and receive only info they considered important.
+
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
