@@ -72,7 +72,7 @@ main = do
   programOptions =
     Opts
     <$> OPA.optional logFileOpt
-    <*> wrappedCommandOpt
+    <*> OPA.optional wrappedCommandOpt
    where
     wrappedCommandOpt :: OPA.Parser String
     wrappedCommandOpt =
@@ -87,3 +87,5 @@ main = do
         <> OPA.short 'f'
         <> OPA.metavar "LOGFILE"
         <> OPA.help "Direct log into a file"
+
+  maybeCommand = wrappedCommand opts
