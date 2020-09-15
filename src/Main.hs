@@ -27,7 +27,7 @@ import Log
 data Opts
   = Opts
   { logFile :: Maybe String
-  , wrappedCommand :: String
+  , wrappedCommand :: Maybe String
   }
 
 -- ** Development debug
