@@ -13,6 +13,7 @@ import qualified Foreign.C.String as CStr
 import qualified System.Process as Proc
 import qualified System.Posix.Terminal as Term
 import qualified System.Posix.IO as PIO
+import qualified System.IO as IO
 import Log
   ( send
   , sendNotice
@@ -40,20 +41,27 @@ main = do
   opts <- OPA.execParser optsParser
   appName <- Env.getProgName
   isTermStdIn <- ioIsTermStdIn
-  Log.withSyslog appName [Log.LogPID] Log.User $ do
+  Log.withSyslog appName [Log.LogPID] Log.User $
     case (isTermStdIn, wrappedCommand opts) of
-      (True, Just command) -> undefined
-        -- TODO: Log and output to the terminal warn that only one of stdin stream OR wrapped command should be present, and throw an error right after that.
+      (True, Just command) -> do
+        undefined
         -- putStrLn command
-      (False, Just command) -> undefined
+        -- TODO: Log and output to the terminal warn that only one of stdin stream OR wrapped command should be present, and throw an error right after that.
+      (False, Just command) -> Proc.withCreateProcess (Proc.shell command) { Proc.std_out = Proc.CreatePipe } $ \_ maybeOutHandle stderr processHandle -> do
         -- TODO: Construct a shell execution wrapper for the command -> go into the default logging flow
-        -- text <- withCreateProcess Proc.shell command
-        -- defaultLogFlow text (logFile opts)
+        case maybeOutHandle of
+          Just outHandle -> do
+            text <- IO.hGetContents outHandle
+            defaultLogFlow text (logFile opts)
+          Nothing ->
+            -- TODO: Report that handler not returned, ?error out?
+            undefined
       (True, Nothing) -> do
         -- TODO: go into the default logging flow
         text <- getContents
         defaultLogFlow text (logFile opts)
-      (False, Nothing) -> undefined
+      (False, Nothing) -> do
+        undefined
         -- TODO: Log from itself and out to terminal that the launch was vacuos. Determine would tool exit normally (aka `echo`) or with error on no input, as `grep`?
 
  where
