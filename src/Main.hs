@@ -11,6 +11,8 @@ import qualified System.Posix.Syslog as Log
 import qualified System.Environment as Env
 import qualified Foreign.C.String as CStr
 import qualified System.Process as Proc
+import qualified System.Posix.Terminal as Term
+import qualified System.Posix.IO as SIO
 import Log
   ( send
   , sendNotice
@@ -37,6 +39,8 @@ main :: IO ()
 main = do
   opts <- OPA.execParser optsParser
   appName <- Env.getProgName
+  -- TODO: here, use this:
+  isTermStdIn <- ioIsTermStdIn
   Log.withSyslog appName [Log.LogPID] Log.User $ do
     sendNotice $ wrappedCommand opts
     text <- getContents
@@ -89,3 +93,5 @@ main = do
         <> OPA.help "Direct log into a file"
 
   maybeCommand = wrappedCommand opts
+
+  ioIsTermStdIn = Term.queryTerminal SIO.stdIn
