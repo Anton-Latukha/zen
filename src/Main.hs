@@ -49,12 +49,12 @@ main = do
         -- TODO: Construct a shell execution wrapper for the command -> go into the default logging flow
         -- text <- withCreateProcess Proc.shell command
         -- defaultLogFlow text (logFile opts)
-      (True, Nothing) -> undefined
+      (True, Nothing) -> do
         -- TODO: go into the default logging flow
-        -- text <- getContents
+        text <- getContents
+        defaultLogFlow text (logFile opts)
       (False, Nothing) -> undefined
         -- TODO: Log from itself and out to terminal that the launch was vacuos. Determine would tool exit normally (aka `echo`) or with error on no input, as `grep`?
-    -- defaultLogFlow text (logFile opts)
 
  where
 
