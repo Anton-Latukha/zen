@@ -43,17 +43,27 @@ main = do
   Log.withSyslog appName [Log.LogPID] Log.User $ do
     case (isTermStdIn, wrappedCommand opts) of
       (True, Just command) -> undefined
+        -- TODO: Log and output to the terminal warn that only one of stdin stream OR wrapped command should be present, and throw an error right after that.
+        -- putStrLn command
       (False, Just command) -> undefined
+        -- TODO: Construct a shell execution wrapper for the command -> go into the default logging flow
+        -- text <- withCreateProcess Proc.shell command
+        -- defaultLogFlow text (logFile opts)
       (True, Nothing) -> undefined
+        -- TODO: go into the default logging flow
         -- text <- getContents
-    --     -- TODO: go into the default logging flow
-    --     -- TODO: Log from itself and out to terminal that the launch was vacuos. Determine would tool exit normally (aka `echo`) or with error on no input, as `grep`?
       (False, Nothing) -> undefined
+        -- TODO: Log from itself and out to terminal that the launch was vacuos. Determine would tool exit normally (aka `echo`) or with error on no input, as `grep`?
+    -- defaultLogFlow text (logFile opts)
+
  where
 
+  defaultLogFlow :: Show a => a -> Maybe FilePath -> IO ()
+  defaultLogFlow text maybeLogFile = do
     text <- getContents
     send text
-    case logFile opts of
+    -- If file is provided - also log into a file.
+    case maybeLogFile of
       Just path -> appendFile path text
       Nothing -> pure ()
 
