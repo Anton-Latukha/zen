@@ -23,6 +23,7 @@ import Log
   , sendAlert
   , sendEmergency
   )
+import Debug
 
 -- ** Data types
 data Opts
@@ -31,9 +32,6 @@ data Opts
   , wrappedCommand :: Maybe String
   }
 
--- ** Development debug
-debugOut :: Show a => a -> IO ()
-debugOut = print
 
 -- ** main function
 main :: IO ()
