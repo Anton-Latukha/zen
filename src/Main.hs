@@ -12,7 +12,7 @@ import qualified System.Environment as Env
 import qualified Foreign.C.String as CStr
 import qualified System.Process as Proc
 import qualified System.Posix.Terminal as Term
-import qualified System.Posix.IO as SIO
+import qualified System.Posix.IO as PIO
 import Log
   ( send
   , sendNotice
@@ -108,4 +108,4 @@ main = do
         <> OPA.metavar "LOGFILE"
         <> OPA.help "Direct log into a file"
 
-  ioIsTermStdIn = Term.queryTerminal SIO.stdInput
+  ioIsTermStdIn = Term.queryTerminal PIO.stdInput
