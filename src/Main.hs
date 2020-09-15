@@ -41,20 +41,21 @@ main = do
   appName <- Env.getProgName
   isTermStdIn <- ioIsTermStdIn
   Log.withSyslog appName [Log.LogPID] Log.User $ do
-    case (isTermStdIn, maybeCommand) of
-      (True, Just command) ->
-        undefined
-        -- TODO: Log and output to the terminal warn that only one of stdin stream OR wrapped command should be present, and throw an error right after that.
-        -- putStrLn command
-      (False, Just command) ->
-        -- TODO: Construct a shell execution wrapper for the command -> go into the default logging flow
-        withCreateProcess Proc.shell command
-      (True, Nothing) ->
-        text <- getContents
-        -- TODO: go into the default logging flow
-      (False, Nothing) ->
-        undefined
-        -- TODO: Log from itself and out to terminal that the launch was vacuos. Determine would tool exit normally (aka `echo`) or with error on no input, as `grep`?
+    -- case (isTermStdIn, maybeCommand) of
+    --   (True, Just command) ->
+    --     undefined
+    --     -- TODO: Log and output to the terminal warn that only one of stdin stream OR wrapped command should be present, and throw an error right after that.
+    --     -- putStrLn command
+    --   (False, Just command) ->
+    --     -- TODO: Construct a shell execution wrapper for the command -> go into the default logging flow
+    --     withCreateProcess Proc.shell command
+    --   (True, Nothing) ->
+        -- text <- getContents
+    --     -- TODO: go into the default logging flow
+    --   (False, Nothing) ->
+    --     undefined
+    --     -- TODO: Log from itself and out to terminal that the launch was vacuos. Determine would tool exit normally (aka `echo`) or with error on no input, as `grep`?
+    text <- getContents
     send text
     case logFile opts of
       Just path -> appendFile path text
