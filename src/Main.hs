@@ -41,27 +41,21 @@ main = do
   appName <- Env.getProgName
   isTermStdIn <- ioIsTermStdIn
   Log.withSyslog appName [Log.LogPID] Log.User $ do
-    -- case (isTermStdIn, maybeCommand) of
-    --   (True, Just command) ->
-    --     undefined
-    --     -- TODO: Log and output to the terminal warn that only one of stdin stream OR wrapped command should be present, and throw an error right after that.
-    --     -- putStrLn command
-    --   (False, Just command) ->
-    --     -- TODO: Construct a shell execution wrapper for the command -> go into the default logging flow
-    --     withCreateProcess Proc.shell command
-    --   (True, Nothing) ->
+    case (isTermStdIn, wrappedCommand opts) of
+      (True, Just command) -> undefined
+      (False, Just command) -> undefined
+      (True, Nothing) -> undefined
         -- text <- getContents
     --     -- TODO: go into the default logging flow
-    --   (False, Nothing) ->
-    --     undefined
     --     -- TODO: Log from itself and out to terminal that the launch was vacuos. Determine would tool exit normally (aka `echo`) or with error on no input, as `grep`?
+      (False, Nothing) -> undefined
+ where
+
     text <- getContents
     send text
     case logFile opts of
       Just path -> appendFile path text
       Nothing -> pure ()
-
- where
 
   optsParser :: OPA.ParserInfo Opts
   optsParser =
@@ -103,7 +97,5 @@ main = do
         <> OPA.short 'f'
         <> OPA.metavar "LOGFILE"
         <> OPA.help "Direct log into a file"
-
-  maybeCommand opts = wrappedCommand opts
 
   ioIsTermStdIn = Term.queryTerminal SIO.stdInput
