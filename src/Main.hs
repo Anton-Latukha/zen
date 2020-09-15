@@ -46,8 +46,9 @@ main = do
         undefined
         -- TODO: Log and output to the terminal warn that only one of stdin stream OR wrapped command should be present, and throw an error right after that.
         -- putStrLn command
-      (False, Just command) -> _
-        -- TODO: exec command -> go into the default logging flow
+      (False, Just command) ->
+        -- TODO: Construct a shell execution wrapper for the command -> go into the default logging flow
+        withCreateProcess Proc.shell command
       (True, Nothing) ->
         text <- getContents
         -- TODO: go into the default logging flow
