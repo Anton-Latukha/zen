@@ -39,12 +39,20 @@ main :: IO ()
 main = do
   opts <- OPA.execParser optsParser
   appName <- Env.getProgName
-  -- TODO: here, use this:
   isTermStdIn <- ioIsTermStdIn
   Log.withSyslog appName [Log.LogPID] Log.User $ do
-    sendNotice $ wrappedCommand opts
+    case (maybeCommand, isTermStdIn) of
+      (Just command, True) -> _
+        -- TODO: Log and output to the terminal warn that only one of stdin stream OR wrapped command should be present, and throw an error right after that.
+        -- putStrLn command
+      (Just command, False) -> _
+        -- TODO: exec command
+      (Nothing, True) -> _
+        -- TODO: go into the default logging flow
+      (Nothing, False) -> _
+        -- TODO: Log from itself and out to terminal that the launch was vacuos. Determine would tool exit normally (aka `echo`) or with error on no input, as `grep`?
     text <- getContents
-    sendNotice text
+    send text
     case logFile opts of
       Just path -> appendFile path text
       Nothing -> pure ()
