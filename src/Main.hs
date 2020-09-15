@@ -103,6 +103,6 @@ main = do
         <> OPA.metavar "LOGFILE"
         <> OPA.help "Direct log into a file"
 
-  maybeCommand = wrappedCommand opts
+  maybeCommand opts = wrappedCommand opts
 
   ioIsTermStdIn = Term.queryTerminal SIO.stdInput
