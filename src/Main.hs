@@ -105,4 +105,4 @@ main = do
 
   maybeCommand = wrappedCommand opts
 
-  ioIsTermStdIn = Term.queryTerminal SIO.stdIn
+  ioIsTermStdIn = Term.queryTerminal SIO.stdInput
