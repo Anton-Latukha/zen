@@ -48,12 +48,12 @@ main = do
         -- putStrLn command
       (False, Just command) -> _
         -- TODO: exec command -> go into the default logging flow
-      (True, Nothing) -> _
+      (True, Nothing) ->
+        text <- getContents
         -- TODO: go into the default logging flow
       (False, Nothing) ->
         undefined
         -- TODO: Log from itself and out to terminal that the launch was vacuos. Determine would tool exit normally (aka `echo`) or with error on no input, as `grep`?
-    text <- getContents
     send text
     case logFile opts of
       Just path -> appendFile path text
