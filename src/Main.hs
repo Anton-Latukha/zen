@@ -43,18 +43,26 @@ main = do
     case (stdinIsInteractiveTerm, wrappedCommand opts) of
       (True, Just command) -> do
         putStrLn "(T,T)"
-        Proc.withCreateProcess (Proc.shell command) { Proc.std_in = Proc.CreatePipe, Proc.std_out = Proc.CreatePipe, Proc.std_err = Proc.CreatePipe } (\ maybeChildInHandle maybeChildOutHandle maybeChildErrHandle processHandle -> do
-        -- TODO: Construct a shell execution wrapper for the command -> go into the default logging flow
-          case maybeChildOutHandle of
-            Just childOutHandle ->
-              do
-                text <- IO.hGetContents childOutHandle
-                defaultLogFlow text (logFile opts)
-                IO.hClose childOutHandle
-            Nothing ->
-            -- TODO: Report that handler not returned, ?error out?
-              undefined
-            )
+        Proc.withCreateProcess (Proc.shell command)
+          { Proc.std_in = Proc.CreatePipe
+          , Proc.std_out = Proc.CreatePipe
+          , Proc.std_err = Proc.CreatePipe
+          }
+          (\
+            _ -- maybeChildInHandle
+            maybeChildOutHandle
+            _ -- maybeChildErrHandle
+            _ -- processHandle
+            -> do
+            -- TODO: Construct a shell execution wrapper for the command -> go into the default logging flow
+              case maybeChildOutHandle of
+                Just childOutHandle -> do
+                  text <- IO.hGetContents childOutHandle
+                  defaultLogFlow text (logFile opts)
+                Nothing ->
+                -- TODO: Report that handler not returned, ?error out?
+                  undefined
+              )
       (True, Nothing) -> do
         putStrLn "(T,F)"
         -- undefined
