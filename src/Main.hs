@@ -38,22 +38,10 @@ main :: IO ()
 main = do
   opts <- OPA.execParser optsParser
   appName <- Env.getProgName
-  isTermStdIn <- ioIsTermStdIn
+  stdinIsInteractiveTerm <- ioStdinIsInteractiveTerm
   Log.withSyslog appName [Log.LogPID] Log.User $
-    case (isTermStdIn, wrappedCommand opts) of
+    case (stdinIsInteractiveTerm, wrappedCommand opts) of
       (True, Just command) -> do
-        putStrLn "(T,T)"
-        -- text <- getContents
-        -- defaultLogFlow text (logFile opts)
-        -- putStrLn command
-        -- TODO: Log and output to the terminal warn that only one of stdin stream OR wrapped command should be present, and throw an error right after that.
-      (True, Nothing) -> do
-        putStrLn "(T,F)"
-        -- TODO: go into the default logging flow
-        -- drainOutput
-      --   text <- getContents
-      --   defaultLogFlow text (logFile opts)
-      (False, Just command) -> do
         -- Proc.withCreateProcess (Proc.shell command) { Proc.std_in = Proc.CreatePipe, Proc.std_out = Proc.CreatePipe, Proc.std_err = Proc.CreatePipe } ( \ maybeChildInHandle maybeChildOutHandle maybeChildErrHandle processHandle -> do
           putStrLn "(F,T)"
         -- TODO: Construct a shell execution wrapper for the command -> go into the default logging flow
@@ -65,10 +53,22 @@ main = do
           --   Nothing -> undefined
             -- TODO: Report that handler not returned, ?error out?
             -- )
-      (False, Nothing) -> do
+      (True, Nothing) -> do
         putStrLn "(F,F)"
         -- undefined
         -- TODO: Log from itself and out to terminal that the launch was vacuos. Determine would tool exit normally (aka `echo`) or with error on no input, as `grep`?
+      (False, Just command) -> do
+        putStrLn "(T,T)"
+        -- text <- getContents
+        -- defaultLogFlow text (logFile opts)
+        -- putStrLn command
+        -- TODO: Log and output to the terminal warn that only one of stdin stream OR wrapped command should be present, and throw an error right after that.
+      (False, Nothing) -> do
+        putStrLn "(T,F)"
+        -- TODO: go into the default logging flow
+        -- drainOutput
+      --   text <- getContents
+      --   defaultLogFlow text (logFile opts)
 
  where
 
@@ -122,4 +122,4 @@ main = do
         <> OPA.metavar "LOGFILE"
         <> OPA.help "Direct log into a file"
 
-  ioIsTermStdIn = Term.queryTerminal PIO.stdInput
+  ioStdinIsInteractiveTerm = Term.queryTerminal PIO.stdInput
