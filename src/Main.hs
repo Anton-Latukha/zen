@@ -42,43 +42,44 @@ main = do
   Log.withSyslog appName [Log.LogPID] Log.User $
     case (stdinIsInteractiveTerm, wrappedCommand opts) of
       (True, Just command) -> do
-        -- Proc.withCreateProcess (Proc.shell command) { Proc.std_in = Proc.CreatePipe, Proc.std_out = Proc.CreatePipe, Proc.std_err = Proc.CreatePipe } ( \ maybeChildInHandle maybeChildOutHandle maybeChildErrHandle processHandle -> do
-          putStrLn "(F,T)"
+        putStrLn "(T,T)"
+        Proc.withCreateProcess (Proc.shell command) { Proc.std_in = Proc.CreatePipe, Proc.std_out = Proc.CreatePipe, Proc.std_err = Proc.CreatePipe } (\ maybeChildInHandle maybeChildOutHandle maybeChildErrHandle processHandle -> do
         -- TODO: Construct a shell execution wrapper for the command -> go into the default logging flow
-          -- case maybeChildOutHandle of
-          --   Just childOutHandle -> do
-          --     text <- IO.hGetContents childOutHandle
-          --     defaultLogFlow text (logFile opts)
-          --     IO.hClose childOutHandle
-          --   Nothing -> undefined
+          case maybeChildOutHandle of
+            Just childOutHandle ->
+              do
+                text <- IO.hGetContents childOutHandle
+                defaultLogFlow text (logFile opts)
+                IO.hClose childOutHandle
+            Nothing ->
             -- TODO: Report that handler not returned, ?error out?
-            -- )
+              undefined
+            )
       (True, Nothing) -> do
-        putStrLn "(F,F)"
+        putStrLn "(T,F)"
         -- undefined
         -- TODO: Log from itself and out to terminal that the launch was vacuos. Determine would tool exit normally (aka `echo`) or with error on no input, as `grep`?
       (False, Just command) -> do
-        putStrLn "(T,T)"
+        putStrLn "(F,T)"
         -- text <- getContents
         -- defaultLogFlow text (logFile opts)
         -- putStrLn command
         -- TODO: Log and output to the terminal warn that only one of stdin stream OR wrapped command should be present, and throw an error right after that.
       (False, Nothing) -> do
-        putStrLn "(T,F)"
+        putStrLn "(F,F)"
         -- TODO: go into the default logging flow
-        -- drainOutput
-      --   text <- getContents
-      --   defaultLogFlow text (logFile opts)
+        -- text <- Term.drainOutput PIO.stdInput
+        text <- getContents
+        defaultLogFlow text (logFile opts)
 
  where
 
   defaultLogFlow :: Show a => a -> Maybe FilePath -> IO ()
   defaultLogFlow text maybeLogFile = do
-    text <- getContents
     send text
     -- If file is provided - also log into a file.
     case maybeLogFile of
-      Just path -> appendFile path text
+      Just path -> appendFile path (show text)
       Nothing -> pure ()
 
   optsParser :: OPA.ParserInfo Opts
