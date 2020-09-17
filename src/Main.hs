@@ -53,15 +53,15 @@ main = do
             maybeChildOutHandle
             _ -- maybeChildErrHandle
             _ -- processHandle
-            -> do
-            -- TODO: Construct a shell execution wrapper for the command -> go into the default logging flow
-              case maybeChildOutHandle of
-                Just childOutHandle -> do
-                  text <- IO.hGetContents childOutHandle
-                  defaultLogFlow text (logFile opts)
-                Nothing ->
-                -- TODO: Report that handler not returned, ?error out?
-                  undefined
+              -> do
+                case maybeChildOutHandle of
+                  Just childOutHandle -> do
+                    text <- IO.hGetContents childOutHandle
+                    defaultLogFlow text (logFile opts)
+                  Nothing ->
+                  -- TODO: Report that handler not returned, ?error out?
+                    undefined
+            -- TODO: If something came down the childOutErr pipe, log it and throw an error with it
               )
       (True, Nothing) -> do
         putStrLn "(T,F)"
