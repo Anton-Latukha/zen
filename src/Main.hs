@@ -39,9 +39,17 @@ main = do
   opts <- OPA.execParser optsParser
   appName <- Env.getProgName
   stdinIsInteractiveTerm <- ioStdinIsInteractiveTerm
+
+-- *** Logging wrapper
   Log.withSyslog appName [Log.LogPID] Log.User $
+
+-- **** Launch modes
     case (stdinIsInteractiveTerm, wrappedCommand opts) of
+
+-- ***** Interactive terminal, command provided
       (True, Just command) -> do
+
+-- ****** Wrap the command process
         Proc.withCreateProcess (Proc.shell command)
           { Proc.std_in = Proc.CreatePipe
           , Proc.std_out = Proc.CreatePipe
@@ -62,18 +70,25 @@ main = do
                     undefined
             -- TODO: If something came down the childOutErr pipe, log it and throw an error with it
               )
+
+-- ***** Interactive terminal, command not provided
       (True, Nothing) -> do
         undefined
         -- TODO: Log from itself and out to terminal that the launch was vacuos. Determine would tool exit normally (aka `echo`) or with error on no input, as `grep`?
+
+-- ***** Pipe, command argument provided
       (False, Just command) -> do
         -- TODO: Log and output to the terminal warn that only one of stdin stream OR wrapped command should be present, and throw an error right after that.
         undefined
+
+-- ***** Pipe, command argument not provided
       (False, Nothing) -> do
         -- TODO: go into the default logging flow
         -- text <- Term.drainOutput PIO.stdInput
         text <- getContents
         defaultLogFlow text (logFile opts)
 
+-- ***** where
  where
 
   defaultLogFlow :: Show a => a -> Maybe FilePath -> IO ()
