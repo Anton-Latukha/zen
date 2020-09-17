@@ -42,7 +42,6 @@ main = do
   Log.withSyslog appName [Log.LogPID] Log.User $
     case (stdinIsInteractiveTerm, wrappedCommand opts) of
       (True, Just command) -> do
-        putStrLn "(T,T)"
         Proc.withCreateProcess (Proc.shell command)
           { Proc.std_in = Proc.CreatePipe
           , Proc.std_out = Proc.CreatePipe
@@ -64,17 +63,12 @@ main = do
             -- TODO: If something came down the childOutErr pipe, log it and throw an error with it
               )
       (True, Nothing) -> do
-        putStrLn "(T,F)"
-        -- undefined
+        undefined
         -- TODO: Log from itself and out to terminal that the launch was vacuos. Determine would tool exit normally (aka `echo`) or with error on no input, as `grep`?
       (False, Just command) -> do
-        putStrLn "(F,T)"
-        -- text <- getContents
-        -- defaultLogFlow text (logFile opts)
-        -- putStrLn command
         -- TODO: Log and output to the terminal warn that only one of stdin stream OR wrapped command should be present, and throw an error right after that.
+        undefined
       (False, Nothing) -> do
-        putStrLn "(F,F)"
         -- TODO: go into the default logging flow
         -- text <- Term.drainOutput PIO.stdInput
         text <- getContents
