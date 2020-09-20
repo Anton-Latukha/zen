@@ -11,6 +11,7 @@ import qualified System.Posix.Syslog as Log
 import qualified System.Environment as Env
 import qualified Foreign.C.String as CStr
 import qualified System.Process as Proc
+import qualified System.Posix.Process as PProc
 import qualified System.Posix.Terminal as Term
 import qualified System.Posix.IO as PIO
 import qualified System.IO as IO
@@ -39,6 +40,8 @@ main = do
   opts <- OPA.execParser optsParser
   appName <- Env.getProgName
   stdinIsInteractiveTerm <- ioStdinIsInteractiveTerm
+  pid <- PProc.getProcessID
+  putStrLn $ "PID: " <> (show pid)
 
 -- *** Logging wrapper
   Log.withSyslog appName [Log.LogPID] Log.User $
