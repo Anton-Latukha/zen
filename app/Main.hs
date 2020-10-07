@@ -67,7 +67,7 @@ main = do
                 case maybeChildOutHandle of
                   Just childOutHandle -> do
                     text <- IO.hGetContents childOutHandle
-                    defaultLogFlow text (logFile opts)
+                    logToSyslogMaybeFile text (logFile opts)
                   Nothing ->
                   -- TODO: Report that handler not returned, ?error out?
                     undefined
@@ -89,13 +89,13 @@ main = do
         -- TODO: go into the default logging flow
         -- text <- Term.drainOutput PIO.stdInput
         text <- getContents
-        defaultLogFlow text (logFile opts)
+        logToSyslogMaybeFile text (logFile opts)
 
 -- ***** where
  where
 
-  defaultLogFlow :: Show a => a -> Maybe FilePath -> IO ()
-  defaultLogFlow text maybeLogFile = do
+  logToSyslogMaybeFile :: Show a => a -> Maybe FilePath -> IO ()
+  logToSyslogMaybeFile text maybeLogFile = do
     send text
     -- If file is provided - also log into a file.
     case maybeLogFile of
